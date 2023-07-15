@@ -1,7 +1,7 @@
 ROOT=$(pwd)
 CPUS=`grep processor /proc/cpuinfo | wc -l`
-grep -q "release 10" /etc/os-release && VERS=10 || VERS=0
-grep -q "release 11" /etc/os-release && VERS=11
+grep -q "VERSION_ID=\"10" /etc/os-release && VERS=10 || VERS=0
+grep -q "VERSION_ID=\"11" /etc/os-release && VERS=11
 echo "ROOT:$ROOT"
 echo "CPUS:$CPUS"
 echo "VERS:$VERS"
