@@ -109,9 +109,8 @@ function add_module {
 function install_common {
     [ -f $COMMON_LOCK ] && return
     # iptables-services for debian
-    apt install -y sudo wget gcc gcc-c++ make cmake autoconf automake \
-        zlib zlib-devel openssl openssl-devel gd gd-devel \
-        telnet tcpdump ipset lsof iptables iptables-services
+    apt install -y sudo wget gcc make cmake autoconf automake \
+        openssl openssl-devel telnet tcpdump ipset lsof iptables
     [ $? != 0 ] && error_exit "common dependence install err"
     # create user for nginx and php
     #groupadd -g 1000 www > /dev/null 2>&1
