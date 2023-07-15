@@ -168,7 +168,7 @@ function install_common {
     apt install -y sudo wget gcc make sudo autoconf \
         libxml2-dev libjpeg-dev libpng-dev libxpm-dev libfreetype6-dev libmcrypt-dev \
         libssl-dev libcurl4-openssl-dev \
-        re2c patch bzip2 diff utils bison net-tools psmisc vim \
+        re2c patch bzip2 diffutils bison net-tools psmisc vim \
         telnet tcpdump ipset lsof iptables
     #apt install -y sudo wget gcc make sudo autoconf libtool-ltdl-devel \
     #    freetype-devel libxml2-devel libjpeg-devel libpng-devel libssl-dev \
