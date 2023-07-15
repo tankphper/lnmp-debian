@@ -105,12 +105,13 @@ function add_module {
 # apt-get build-dep nginx
 # build-essential include c++ & g++
 # nginx gzip depend zlib1g-dev
-# nginx ssl depend openssl
+# nginx ssl depend libssl-dev
+# nginx image_filter denpend libgd-dev
 # nginx user:group is www:www
 function install_common {
     [ -f $COMMON_LOCK ] && return
     apt install -y sudo wget gcc build-essential make cmake autoconf automake \
-        zlib1g-dev openssl libssl-dev telnet tcpdump ipset lsof iptables
+        zlib1g-dev libssl-dev libgd-dev telnet tcpdump ipset lsof iptables
     [ $? != 0 ] && error_exit "common dependence install err"
     # create user for nginx and php
     #groupadd -g 1000 www > /dev/null 2>&1
