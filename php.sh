@@ -19,6 +19,10 @@ ICONV_LOCK="$LOCK_DIR/php.iconv.lock"
 MCRYPT_DOWN="https://gitlab.com/lnmp-shell/lnmp-files/-/raw/master/libmcrypt-2.5.8.tar.gz"
 MCRYPT_SRC="libmcrypt-2.5.8"
 MCRYPT_LOCK="$LOCK_DIR/mcrypt.lock"
+# freetype2
+FREETYPE_DOWN="https://sourceforge.net/projects/freetype/files/freetype2/2.8.1/freetype-2.8.1.tar.gz"
+FREETYPE_SRC="freetype-2.8.1"
+FREETYPE_LOCK="$LOCK_DIR/freetype.lock"
 # common dependency for php
 COMMON_LOCK="$LOCK_DIR/php.common.lock"
 
@@ -28,6 +32,7 @@ COMMON_LOCK="$LOCK_DIR/php.common.lock"
 # no zend guard loader for php-7.x
 function install_php {
     
+    [ ! -f /usr/lib/freetype.so ] && install_freetype
     [ ! -f /usr/lib/libiconv.so ] && install_libiconv
     #[ ! -f /usr/lib/libmcrypt.so ] && install_mcrypt
     
@@ -43,8 +48,8 @@ function install_php {
         --with-config-file-path=$INSTALL_DIR/$PHP_DIR/etc \
         --enable-mysqlnd --with-mysql=mysqlnd --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd \
         --with-iconv-dir=/usr \
-        --with-freetype-dir --with-jpeg-dir \
-        --with-png-dir --with-zlib \
+        --with-freetype-dir=/usr/local/freetype \
+        --with-jpeg-dir --with-png-dir --with-zlib \
         --with-libxml-dir=/usr --enable-xml \
         --disable-rpath \
         --enable-inline-optimization --with-curl \
@@ -158,6 +163,31 @@ function install_mcrypt {
     echo 
     echo "install mcrypt complete."
     touch $MCRYPT_LOCK
+}
+
+# freetype install function
+# freetype_dir=/usr/local/freetype
+function install_freetype {
+    [ -f $FREETYPE_LOCK ] && return
+    echo "install freetype..."
+
+    cd $SRC_DIR
+    [ ! -f $FREETYPE_SRC$SRC_SUFFIX ] && wget $FREETYPE_DOWN
+    tar -zxvf $FREETYPE_SRC$SRC_SUFFIX
+    cd $FREETYPE_SRC
+    ./configure --prefix=/usr/local/freetype
+    [ $? != 0 ] && error_exit "freetype configure err"
+    make
+    [ $? != 0 ] && error_exit "freetype make err"
+    make install
+    [ $? != 0 ] && error_exit "freetype install err"
+
+    cd $SRC_DIR
+    rm -fr $FREETYPE_SRC
+
+    echo
+    echo "install freetype complete."
+    touch $FREETYPE_LOCK
 }
 
 # install common dependency
