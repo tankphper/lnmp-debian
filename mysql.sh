@@ -189,13 +189,14 @@ function install_rpcgen {
 
 
 # install common dependency
+# build-essential include c++ & g++
 # mysql compile need boost default dir=/usr/share/doc/boost-1.59.0
 # remove system default cmake
 # mysql user:group is mysql:mysql
 function install_common {
     [ -f $COMMON_LOCK ] && return
-    apt install -y sudo wget gcc gcc-c++ ncurses ncurses-devel bison \
-        tcpdump iptables iptables-services libtirpc-devel
+    apt install -y sudo wget gcc build-essential ncurses ncurses-devel \
+        bison tcpdump iptables libtirpc-devel
     [ $? != 0 ] && error_exit "common dependence install err"
     
     # create user for mysql
@@ -209,7 +210,7 @@ function install_common {
     # set local timezone
     ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
     # syn hardware time to system time
-    hwclock -w 
+    /usr/sbin/hwclock -w
    
     echo 
     echo "install common dependency complete."
