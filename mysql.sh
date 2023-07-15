@@ -199,13 +199,13 @@ function install_common {
     [ $? != 0 ] && error_exit "common dependence install err"
     
     # create user for mysql
-    #groupadd -g 27 mysql > /dev/null 2>&1
+    #sudo groupadd -g 27 mysql > /dev/null 2>&1
     # -d to set user home_dir=/www
     # -s to set user login shell=/sbin/nologin, you also to set /bin/bash
-    #useradd -g 27 -u 27 -d /dev/null -s /sbin/nologin mysql > /dev/null 2>&1
+    #sudo useradd -g 27 -u 27 -d /dev/null -s /sbin/nologin mysql > /dev/null 2>&1
     
     # -U create a group with the same name as the user. so it can instead groupadd and useradd
-    useradd -U -d /dev/null -s /sbin/nologin mysql > /dev/null 2>&1
+    sudo useradd -U -d /dev/null -s /sbin/nologin mysql > /dev/null 2>&1
     # set local timezone
     ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
     # syn hardware time to system time
