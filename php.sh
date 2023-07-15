@@ -165,12 +165,17 @@ function install_mcrypt {
 # php user:group is www:www
 function install_common {
     [ -f $COMMON_LOCK ] && return
-    apt install -y sudo wget gcc make sudo autoconf libtool-ltdl-devel \
-        freetype-devel libxml2-devel libjpeg-devel libpng-devel libssl-dev \
-        libsqlite3x-devel sqlite-devel oniguruma-devel sysklogd re2c \
-        curl-devel patch ncurses-devel bzip2 libcap-devel diffutils \
-        bison icu libicu libicu-devel net-tools psmisc vim vim-enhanced \
+    apt install -y sudo wget gcc make sudo autoconf \
+        libxml2-dev libjpeg-dev libpng-dev libxpm-dev libfreetype6-dev libmcrypt-dev \
+        libssl-dev libcurl4-openssl-dev \
+        re2c patch bzip2 diff utils bison net-tools psmisc vim \
         telnet tcpdump ipset lsof iptables
+    #apt install -y sudo wget gcc make sudo autoconf libtool-ltdl-devel \
+    #    freetype-devel libxml2-devel libjpeg-devel libpng-devel libssl-dev \
+    #    libsqlite3x-devel sqlite-devel oniguruma-devel sysklogd re2c \
+    #    curl-devel patch ncurses-devel bzip2 libcap-devel diffutils \
+    #    bison icu libicu libicu-devel net-tools psmisc vim vim-enhanced \
+    #    telnet tcpdump ipset lsof iptables
     [ $? != 0 ] && error_exit "common dependency install err"
     
     # create user for nginx php
