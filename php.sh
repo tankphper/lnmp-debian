@@ -85,20 +85,13 @@ function install_php {
         cp -f $INSTALL_DIR/$PHP_DIR/etc/php-fpm.conf.default $INSTALL_DIR/$PHP_DIR/etc/php-fpm.conf
         echo 'PHP 5.6'
     fi
-    # for php-fpm
-    if [ $VERS -ge 7 ]; then
-        cp -f ./sapi/fpm/php-fpm.service /usr/lib/systemd/system/
-        sed -i 's@${prefix}@/www/server/php@' /usr/lib/systemd/system/php-fpm.service
-        sed -i 's@${exec_prefix}@/www/server/php@' /usr/lib/systemd/system/php-fpm.service
-        systemctl daemon-reload
-        systemctl start php-fpm.service
-        systemctl enable php-fpm.service
-    else
-        cp -f ./sapi/fpm/init.d.php-fpm /etc/init.d/php-fpm
-        chmod +x /etc/init.d/php-fpm
-        chkconfig --add php-fpm
-        service php-fpm start
-    fi
+    # auto start script of systemd mode
+    cp -f ./sapi/fpm/php-fpm.service /usr/lib/systemd/system/
+    sed -i 's@${prefix}@/www/server/php@' /usr/lib/systemd/system/php-fpm.service
+    sed -i 's@${exec_prefix}@/www/server/php@' /usr/lib/systemd/system/php-fpm.service
+    systemctl daemon-reload
+    systemctl start php-fpm.service
+    systemctl enable php-fpm.service
     
     echo  
     echo "install php complete."
@@ -173,7 +166,7 @@ function install_mcrypt {
 function install_common {
     [ -f $COMMON_LOCK ] && return
     apt install -y sudo wget gcc make sudo autoconf libtool-ltdl-devel \
-        freetype-devel libxml2-devel libjpeg-devel libpng-devel openssl-devel \
+        freetype-devel libxml2-devel libjpeg-devel libpng-devel libssl-dev \
         libsqlite3x-devel sqlite-devel oniguruma-devel sysklogd re2c \
         curl-devel patch ncurses-devel bzip2 libcap-devel diffutils \
         bison icu libicu libicu-devel net-tools psmisc vim vim-enhanced \
@@ -190,8 +183,6 @@ function install_common {
     useradd -U -d /www -s /sbin/nologin www > /dev/null 2>&1
     # set local timezone
     ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
-    # syn hardware time to system time
-    hwclock -w
     
     echo 
     echo "install common dependency complete."
