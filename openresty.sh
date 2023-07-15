@@ -90,6 +90,7 @@ function add_push_stream {
     cd $SRC_DIR
     git clone http://github.com/wandenberg/nginx-push-stream-module.git
     cd $OPENRESTY_VERSION
+    export PATH=$PATH:/sbin
     ./configure --user=www --group=www --prefix=$OPENRESTY_DIR \
            --add-module=../nginx-push-stream-module
     [ $? != 0 ] && error_exit "openresty configure err"
