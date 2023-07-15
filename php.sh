@@ -115,7 +115,7 @@ function install_libiconv {
     [ ! -f $ICONV_SRC$SRC_SUFFIX ] && wget $ICONV_DOWN
     tar -zxvf $ICONV_SRC$SRC_SUFFIX
     cd $ICONV_SRC
-    # for Centos 7 start
+    # for Debian start
     cd srclib
     sed -i -e '/gets is a security/d' stdio.in.h
     cd ..
@@ -172,13 +172,12 @@ function install_mcrypt {
 # php user:group is www:www
 function install_common {
     [ -f $COMMON_LOCK ] && return
-    # iptables-services for Centos 7 and Centos 8
-    apt install -y sudo wget gcc gcc-c++ make sudo autoconf libtool-ltdl-devel gd-devel \
+    apt install -y sudo wget gcc make sudo autoconf libtool-ltdl-devel \
         freetype-devel libxml2-devel libjpeg-devel libpng-devel openssl-devel \
         libsqlite3x-devel sqlite-devel oniguruma-devel sysklogd re2c \
         curl-devel patch ncurses-devel bzip2 libcap-devel diffutils \
         bison icu libicu libicu-devel net-tools psmisc vim vim-enhanced \
-        zip unzip telnet tcpdump ipset lsof iptables iptables-services
+        telnet tcpdump ipset lsof iptables
     [ $? != 0 ] && error_exit "common dependency install err"
     
     # create user for nginx php

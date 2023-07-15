@@ -20,7 +20,7 @@ BOOST_DOWN="https://gitlab.com/lnmp-shell/lnmp-files/-/raw/master/boost_1_59_0.t
 BOOST_SRC="boost_1_59_0"
 BOOST_DIR="$BOOST_SRC"
 BOOST_LOCK="$LOCK_DIR/boost.lock"
-# Centos 8 missing rpcgen
+# Debian missing rpcgen
 RPCGEN_DOWN="https://github.com/thkukuk/rpcsvc-proto/releases/download/v1.4.2/rpcsvc-proto-1.4.2.tar.xz"
 RPCGEN_SRC="rpcsvc-proto-1.4.2"
 RPCGEN_LOCK="$LOCK_DIR/mysql.rpcgen.lock"
@@ -102,7 +102,7 @@ function install_mysql {
     chown -hR mysql:mysql $INSTALL_DIR/mysql/data 
     # slow log file
     touch /var/log/mysql-slow.log && chown -hR mysql:root /var/log/mysql-slow.log
-    # auto start script for Centos 6 and Centos 7
+    # auto start script for debian
     cp -f ./support-files/mysql.server /etc/init.d/mysqld
     chmod +x /etc/init.d/mysqld
     # auto start when start system
@@ -163,7 +163,7 @@ function install_boost {
     touch $BOOST_LOCK
 }
 
-# Centos 8 install rpcgen
+# Debian install rpcgen
 function install_rpcgen {
     [ -f $RPCGEN_LOCK ] && return
 
@@ -191,7 +191,6 @@ function install_rpcgen {
 # install common dependency
 # mysql compile need boost default dir=/usr/share/doc/boost-1.59.0
 # remove system default cmake
-# centos 8.x missing libtirpc-devel
 # mysql user:group is mysql:mysql
 function install_common {
     [ -f $COMMON_LOCK ] && return

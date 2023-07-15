@@ -38,39 +38,22 @@ function install_redis {
     sed -i 's@^dbfilename dump.rdb@dbfilename redis.rdb@' $CONF_DIR/redis.conf
     mkdir -p /www/data
     sed -i 's@^dir ./@dir /www/data/@' $CONF_DIR/redis.conf
-    if [ $VERS -ge 7 ]; then
-        # systemctl require redis run non-daemonised
-        sed -i 's@^daemonize yes@daemonize no@' $CONF_DIR/redis.conf
-        # auto start script for Centos 7 and Centos 8
-        cp $ROOT/redis.server.conf/redis.init.R7 /usr/lib/systemd/system/redis.service 
-        systemctl daemon-reload
-        systemctl start redis.service
-        # auto start when start system
-        systemctl enable redis.service
-    else
-        # only Centos 6 need daemon
-        sed -i 's@^daemonize no@daemonize yes@' $CONF_DIR/redis.conf
-        # auto start script for Centos 6
-        auto_start_dir="/etc/rc.d/init.d"
-        cp -f utils/redis_init_script $auto_start_dir/redis
-        sed -i '1a# chkconfig: 2345 80 90' $auto_start_dir/redis 
-        sed -i 's@^CONF="/etc/redis/${REDISPORT}.conf"@CONF="/www/server/etc/redis.conf"@' $auto_start_dir/redis 
-        sed -i 's@$EXEC $CONF@$EXEC $CONF \&@' $auto_start_dir/redis 
-        # chkconfig and start
-        chkconfig --add redis
-        service redis start
-    fi
-     
+    # systemctl require redis run non-daemonised
+    sed -i 's@^daemonize yes@daemonize no@' $CONF_DIR/redis.conf
+    # auto start script for Debian
+    cp $ROOT/redis.server.conf/redis.init.R7 /usr/lib/systemd/system/redis.service 
+    systemctl daemon-reload
+    systemctl start redis.service
+    # auto start when start system
+    
     echo  
     echo "install redis complete."
     touch $REDIS_LOCK
 }
 
-# Centos 7 install devtoolset
+# Debian install devtoolset
 # GCC 5.3 or newer is required for Redis 6.x
 function install_devtool {
-    apt install -y centos-release-scl
-    [ $? != 0 ] && error_exit "scl install err"
     apt install -y devtoolset-7
     [ $? != 0 ] && error_exit "devtool install err"
     echo ""
@@ -85,7 +68,7 @@ function install_common {
     [ $? != 0 ] && error_exit "common dependence install err"
     $(echo $REDIS_SRC | grep -q "redis-6") && V6=1 || V6=0
     if [[ $V6 -eq 1 && $VERS -eq 7 && ! -f /etc/scl/prefixes/devtoolset-7 ]]; then
-        read -p "Redis $REDIS_VERSION require devtoolset on Centos 7, do you want to install? (Y/N) " CONFIRM
+        read -p "Redis $REDIS_VERSION require devtoolset on Debian, do you want to install? (Y/N) " CONFIRM
         if [[ $CONFIRM == "Y" ]]; then
             install_devtool
         else
