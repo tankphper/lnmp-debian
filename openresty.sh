@@ -29,7 +29,7 @@ function install_openresty {
     cd $OPENRESTY_VERSION
     make clean > /dev/null 2>&1
     export PATH=$PATH:/sbin
-    ./configure --user=www --group=www --prefix=$OPENRESTY_DIR --with-openssl=/usr/bin
+    ./configure --user=www --group=www --prefix=$OPENRESTY_DIR
     [ $? != 0 ] && error_exit "openresty configure err"
     make -j $CPUS
     [ $? != 0 ] && error_exit "openresty make err"
@@ -102,15 +102,16 @@ function add_module {
 }
 
 # install common dependency
+# apt-get build-dep nginx
 # build-essential include c++ & g++
 # nginx gzip depend zlib1g-dev
 # nginx ssl depend openssl
-# nginx image_filter module denpend gd gd-devel
+# nginx image_filter module denpend gd
 # nginx user:group is www:www
 function install_common {
     [ -f $COMMON_LOCK ] && return
     apt install -y sudo wget gcc build-essential make cmake autoconf automake \
-        zlib1g-dev openssl telnet tcpdump ipset lsof iptables
+        zlib1g-dev openssl libssl-dev telnet tcpdump ipset lsof iptables
     [ $? != 0 ] && error_exit "common dependence install err"
     # create user for nginx and php
     #groupadd -g 1000 www > /dev/null 2>&1
