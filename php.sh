@@ -32,7 +32,7 @@ COMMON_LOCK="$LOCK_DIR/php.common.lock"
 # no zend guard loader for php-7.x
 function install_php {
     
-    [ ! -f /usr/lib/freetype.so ] && install_freetype
+    [ ! -d /usr/local/freetype ] && install_freetype
     [ ! -f /usr/lib/libiconv.so ] && install_libiconv
     #[ ! -f /usr/lib/libmcrypt.so ] && install_mcrypt
     
