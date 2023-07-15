@@ -29,7 +29,7 @@ COMMON_LOCK="$LOCK_DIR/php.common.lock"
 function install_php {
     
     [ ! -f /usr/lib/libiconv.so ] && install_libiconv
-    [ ! -f /usr/lib/libmcrypt.so ] && install_mcrypt
+    #[ ! -f /usr/lib/libmcrypt.so ] && install_mcrypt
     
     [ -f $PHP_LOCK ] && (echo 'Install locked.') && return    
     echo "install php..."
