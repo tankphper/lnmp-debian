@@ -29,7 +29,7 @@ function install_openresty {
     cd $OPENRESTY_VERSION
     make clean > /dev/null 2>&1
     export PATH=$PATH:/sbin
-    ./configure --user=www --group=www --prefix=$OPENRESTY_DIR
+    ./configure --user=www --group=www --prefix=$OPENRESTY_DIR --with-openssl=/usr/bin
     [ $? != 0 ] && error_exit "openresty configure err"
     make -j $CPUS
     [ $? != 0 ] && error_exit "openresty make err"
