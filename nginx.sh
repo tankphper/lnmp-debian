@@ -105,7 +105,7 @@ function install_pcre {
 # build-essential include c++ & g++
 # nginx gzip depend zlib1g-dev
 # nginx ssl depend openssl
-# nginx image_filter module denpend gd
+# nginx image_filter denpend gd
 # nginx user:group is www:www
 function install_common {
     [ -f $COMMON_LOCK ] && return
