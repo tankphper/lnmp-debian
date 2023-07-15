@@ -1,0 +1,5 @@
+source $VIMRUNTIME/defaults.vim
+let skip_defaults_vim = 1
+if has('mouse')
+    set mouse=r
+endif
