@@ -10,7 +10,7 @@ PCRE_DOWN="https://ftp.pcre.org/pub/pcre/pcre-8.43.tar.gz"
 PCRE_SRC="pcre-8.43"
 PCRE_LOCK="$LOCK_DIR/pcre.lock"
 # openresty source
-OPENRESTY_VERSION="openresty-1.21.4.1"
+OPENRESTY_VERSION="openresty-1.19.9.1"
 OPENRESTY_FILE="$OPENRESTY_VERSION$SRC_SUFFIX"
 OPENRESTY_DOWN="https://openresty.org/download/$OPENRESTY_FILE"
 OPENRESTY_DIR="$INSTALL_DIR/$OPENRESTY_VERSION"
@@ -28,7 +28,7 @@ function install_openresty {
     tar -zxvf $OPENRESTY_FILE
     cd $OPENRESTY_VERSION
     make clean > /dev/null 2>&1
-    sed -i 's@CFLAGS="$CFLAGS -g"@#CFLAGS="$CFLAGS -g"@' auto/cc/gcc
+    export PATH=$PATH:/sbin
     ./configure --user=www --group=www --prefix=$OPENRESTY_DIR
     [ $? != 0 ] && error_exit "openresty configure err"
     make -j $CPUS
@@ -102,15 +102,15 @@ function add_module {
 }
 
 # install common dependency
-# nginx gzip depend zlib zlib-devel
-# nginx ssl depend openssl openssl-devel
+# build-essential include c++ & g++
+# nginx gzip depend zlib1g-dev
+# nginx ssl depend openssl
 # nginx image_filter module denpend gd gd-devel
 # nginx user:group is www:www
 function install_common {
     [ -f $COMMON_LOCK ] && return
-    # iptables-services for debian
-    apt install -y sudo wget gcc make cmake autoconf automake \
-        openssl openssl-devel telnet tcpdump ipset lsof iptables
+    apt install -y sudo wget gcc build-essential make cmake autoconf automake \
+        zlib1g-dev openssl telnet tcpdump ipset lsof iptables
     [ $? != 0 ] && error_exit "common dependence install err"
     # create user for nginx and php
     #groupadd -g 1000 www > /dev/null 2>&1
