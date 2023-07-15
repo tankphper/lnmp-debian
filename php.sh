@@ -34,7 +34,7 @@ function install_php {
     
     [ ! -d /usr/local/freetype ] && install_freetype
     [ ! -f /usr/lib/libiconv.so ] && install_libiconv
-    #[ ! -f /usr/lib/libmcrypt.so ] && install_mcrypt
+    [ ! -f /usr/lib/libmcrypt.so ] && install_mcrypt
     
     [ -f $PHP_LOCK ] && (echo 'Install locked.') && return    
     echo "install php..."
