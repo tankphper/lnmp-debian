@@ -101,14 +101,16 @@ function install_pcre {
 }
 
 # install common dependency
-# nginx gzip depend zlib zlib-devel
-# nginx ssl depend openssl openssl-devel
-# nginx image_filter module denpend gd gd-devel
+# apt-get build-dep nginx
+# build-essential include c++ & g++
+# nginx gzip depend zlib1g-dev
+# nginx ssl depend openssl
+# nginx image_filter module denpend gd
 # nginx user:group is www:www
 function install_common {
     [ -f $COMMON_LOCK ] && return
-    apt install -y sudo wget gcc make cmake autoconf automake \
-        openssl openssl-devel telnet tcpdump ipset lsof iptables
+    apt install -y sudo wget gcc build-essential make cmake autoconf automake \
+        zlib1g-dev openssl libssl-dev telnet tcpdump ipset lsof iptables
     [ $? != 0 ] && error_exit "common dependence install err"
     # create user for nginx and php
     #groupadd -g 1000 www > /dev/null 2>&1
@@ -120,8 +122,6 @@ function install_common {
     useradd -U -d /www -s /sbin/nologin www > /dev/null 2>&1
     # set local timezone
     ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
-    # syn hardware time to system time
-    hwclock -w
    
     echo 
     echo "install common dependency complete."
