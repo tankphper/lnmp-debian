@@ -161,11 +161,12 @@ function install_mcrypt {
 }
 
 # install common dependency
+# build-essential include c++ & g++
 # ifconfig command depend net-tools
 # php user:group is www:www
 function install_common {
     [ -f $COMMON_LOCK ] && return
-    apt install -y sudo wget gcc make sudo autoconf \
+    apt install -y sudo wget gcc build-essential make sudo autoconf pkg-config \
         libxml2-dev libjpeg-dev libpng-dev libxpm-dev libfreetype6-dev libmcrypt-dev \
         libssl-dev libcurl4-openssl-dev \
         re2c patch bzip2 diffutils bison net-tools psmisc vim \
