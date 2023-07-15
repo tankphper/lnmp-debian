@@ -41,7 +41,7 @@ function install_redis {
     # systemctl require redis run non-daemonised
     sed -i 's@^daemonize yes@daemonize no@' $CONF_DIR/redis.conf
     # auto start script for Debian
-    cp $ROOT/redis.server.conf/redis.init.R7 /usr/lib/systemd/system/redis.service 
+    cp $ROOT/redis.server.conf/redis.service /usr/lib/systemd/system/redis.service 
     systemctl daemon-reload
     systemctl start redis.service
     # auto start when start system
@@ -51,30 +51,10 @@ function install_redis {
     touch $REDIS_LOCK
 }
 
-# Debian install devtoolset
-# GCC 5.3 or newer is required for Redis 6.x
-function install_devtool {
-    apt install -y devtoolset-7
-    [ $? != 0 ] && error_exit "devtool install err"
-    echo ""
-    echo "Devtoolset-7 install completed. You can install Redis Server now."
-    echo ""
-    scl enable devtoolset-7 bash
-}
-
 # install common dependency
 function install_common {
     apt install -y sudo wget tcl
     [ $? != 0 ] && error_exit "common dependence install err"
-    $(echo $REDIS_SRC | grep -q "redis-6") && V6=1 || V6=0
-    if [[ $V6 -eq 1 && $VERS -eq 7 && ! -f /etc/scl/prefixes/devtoolset-7 ]]; then
-        read -p "Redis $REDIS_VERSION require devtoolset on Debian, do you want to install? (Y/N) " CONFIRM
-        if [[ $CONFIRM == "Y" ]]; then
-            install_devtool
-        else
-            exit
-        fi
-    fi
 }
 
 # install error function
