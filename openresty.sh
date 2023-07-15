@@ -84,8 +84,8 @@ function install_pcre {
     touch $PCRE_LOCK
 }
 
-# add nginx third module
-function add_module {
+# add nginx push stream module
+function add_push_stream {
     echo "install module..."
     cd $SRC_DIR
     git clone http://github.com/wandenberg/nginx-push-stream-module.git
@@ -146,8 +146,8 @@ function start_install {
     install_openresty
 }
 
-if [[ $1 = "module" ]]; then
-    add_module
+if [ $1 ]; then
+    add_$1
 else
     start_install
 fi
