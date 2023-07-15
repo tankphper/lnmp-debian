@@ -198,15 +198,9 @@ function install_common {
     [ -f $COMMON_LOCK ] && return
     apt install -y sudo wget gcc build-essential make sudo autoconf pkg-config \
         libxml2-dev libjpeg-dev libpng-dev libxpm-dev libfreetype6-dev libmcrypt-dev \
-        libssl-dev libcurl4-openssl-dev \
-        re2c patch bzip2 diffutils bison net-tools psmisc vim \
+        libssl-dev libcurl4-openssl-dev net-tools \
+        re2c patch bzip2 diffutils bison psmisc \
         telnet tcpdump ipset lsof iptables
-    #apt install -y sudo wget gcc make sudo autoconf libtool-ltdl-devel \
-    #    freetype-devel libxml2-devel libjpeg-devel libpng-devel libssl-dev \
-    #    libsqlite3x-devel sqlite-devel oniguruma-devel sysklogd re2c \
-    #    curl-devel patch ncurses-devel bzip2 libcap-devel diffutils \
-    #    bison icu libicu libicu-devel net-tools psmisc vim vim-enhanced \
-    #    telnet tcpdump ipset lsof iptables
     [ $? != 0 ] && error_exit "common dependency install err"
     
     # create user for nginx php

@@ -195,8 +195,9 @@ function install_rpcgen {
 # mysql user:group is mysql:mysql
 function install_common {
     [ -f $COMMON_LOCK ] && return
+    # libncurses5 libncurses5-dev libncursesw5 libncursesw5-dev
     apt install -y sudo wget gcc build-essential libncurses-dev libtirpc-dev \
-        bison tcpdump iptables
+        bison telnet tcpdump ipset lsof iptables
     [ $? != 0 ] && error_exit "common dependence install err"
     
     # create user for mysql
