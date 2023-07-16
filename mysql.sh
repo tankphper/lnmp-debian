@@ -105,10 +105,11 @@ function install_mysql {
     # auto start script for debian
     cp -f ./support-files/mysql.server /etc/init.d/mysqld
     chmod +x /etc/init.d/mysqld
+    sudo update-rc.d mysqld defaults
+    systemctl daemon-reload
+    systemctl start mysqld.service
     # auto start when start system
-    chkconfig --add mysqld
-    chkconfig --level 35 mysqld on
-    service mysqld start
+    systemctl enable mysqld.service
 
     # init empty password, set root password like this for mysql-5.7.x
     mysql -u root -e "use mysql;alter user 'root'@'localhost' identified by 'password'"
