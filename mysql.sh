@@ -92,7 +92,7 @@ function install_mysql {
     # add to active lib
     echo "$INSTALL_DIR/mysql" > /etc/ld.so.conf.d/mysql-wdl.conf
     # refresh active lib
-    ldconfig
+    /usr/sbin/ldconfig
     
     # init db for mysql-5.7.x
     # --initialize set password to log file
@@ -198,7 +198,7 @@ function install_common {
     [ -f $COMMON_LOCK ] && return
     # libncurses5 libncurses5-dev libncursesw5 libncursesw5-dev
     apt install -y sudo wget gcc build-essential libncurses-dev libtirpc-dev \
-        bison telnet tcpdump ipset lsof iptables
+        glibc-source bison telnet tcpdump ipset lsof iptables
     [ $? != 0 ] && error_exit "common dependence install err"
     
     # create user for mysql
